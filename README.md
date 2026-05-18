@@ -75,6 +75,14 @@ CREATE TABLE inquiries (
   contact TEXT NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+CREATE TABLE chat_logs (
+  id BIGSERIAL PRIMARY KEY,
+  session_id TEXT NOT NULL,
+  role TEXT NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
 ```
 
 ### 3. Configure environment variables
@@ -125,6 +133,8 @@ pytest tests/
 - **Answers questions** about services, pricing, hours, location, and policies (from hardcoded business data in the system prompt)
 - **Books appointments** — collects customer name, date, time, service, and phone, then inserts into Supabase
 - **Submits inquiries** — for fleet services, custom quotes, or anything needing a follow-up
+- **Multi-language** — responds in whatever language the customer writes in
+- **Analytics dashboard** — tracks messages, sessions, popular services, and daily activity
 - **Mobile-friendly** — responsive Tailwind UI that works great on phones
 
 ## What I'd Improve With More Time
@@ -134,7 +144,5 @@ pytest tests/
 - **Persistent conversation history** in Supabase for returning customers
 - **Admin authentication** to protect the dashboard and customer data
 - **SMS/email confirmations** for booked appointments
-- **Analytics tracking** to see what customers ask most
 - **More comprehensive tests** covering the agent loop, database operations, and chat handler
-- **Multi-language support** (Spanish is common in auto shops)
 - **Voice support** via Web Speech API or Twilio

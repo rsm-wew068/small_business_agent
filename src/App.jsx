@@ -5,6 +5,17 @@ import QuickActions from './components/QuickActions'
 import AdminPanel from './components/AdminPanel'
 
 const STORAGE_KEY = 'erics-auto-care-messages'
+const SESSION_KEY = 'erics-auto-care-session'
+
+function getSessionId() {
+  let id = localStorage.getItem(SESSION_KEY)
+  if (!id) {
+    id = crypto.randomUUID()
+    localStorage.setItem(SESSION_KEY, id)
+  }
+  return id
+}
+
 const WELCOME_MESSAGE = {
   role: 'assistant',
   content: "Welcome to Eric's Auto Care! 🔧 I'm your virtual assistant. I can help you with our services, book an appointment, or answer any questions. How can I help you today?"
@@ -45,7 +56,7 @@ export default function App() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history }),
+        body: JSON.stringify({ messages: history, session_id: getSessionId() }),
       })
 
       if (!res.ok) throw new Error('Request failed')

@@ -8,6 +8,7 @@
   },
   "rewrites": [
     { "source": "/api/admin/appointments", "destination": "/api/admin-appointments" },
-    { "source": "/api/admin/inquiries", "destination": "/api/admin-inquiries" }
+    { "source": "/api/admin/inquiries", "destination": "/api/admin-inquiries" },
+    { "source": "/api/admin/analytics", "destination": "/api/admin-analytics" }
   ]
 }

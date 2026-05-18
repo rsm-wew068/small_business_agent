@@ -43,3 +43,41 @@ def get_inquiries():
     client = _get_client()
     result = client.table("inquiries").select("*").order("created_at", desc=True).execute()
     return result.data
+
+
+def insert_chat_log(session_id, role, content):
+    client = _get_client()
+    client.table("chat_logs").insert({
+        "session_id": session_id,
+        "role": role,
+        "content": content[:500],
+    }).execute()
+
+
+def get_analytics():
+    client = _get_client()
+    appointments = client.table("appointments").select("service, created_at").execute().data
+    inquiries = client.table("inquiries").select("created_at").execute().data
+    chat_logs = client.table("chat_logs").select("session_id, created_at").execute().data
+
+    total_messages = len(chat_logs)
+    unique_sessions = len({log["session_id"] for log in chat_logs}) if chat_logs else 0
+
+    service_counts = {}
+    for appt in appointments:
+        s = appt["service"]
+        service_counts[s] = service_counts.get(s, 0) + 1
+
+    dates = [appt["created_at"][:10] for appt in appointments] + [inq["created_at"][:10] for inq in inquiries]
+    date_counts = {}
+    for d in dates:
+        date_counts[d] = date_counts.get(d, 0) + 1
+
+    return {
+        "total_appointments": len(appointments),
+        "total_inquiries": len(inquiries),
+        "total_messages": total_messages,
+        "unique_sessions": unique_sessions,
+        "services": sorted(service_counts.items(), key=lambda x: -x[1]),
+        "daily_activity": sorted(date_counts.items(), reverse=True)[:7],
+    }

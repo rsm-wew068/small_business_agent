@@ -1,19 +1,39 @@
 import { useState, useEffect } from 'react';
 
+function StatCard({ label, value }) {
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-4">
+      <p className="text-2xl font-bold text-gray-900">{value}</p>
+      <p className="text-sm text-gray-500">{label}</p>
+    </div>
+  );
+}
+
 export default function AdminPanel({ onBack }) {
   const [tab, setTab] = useState('appointments');
   const [data, setData] = useState([]);
+  const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/admin/${tab}`)
-      .then((r) => r.json())
-      .then((json) => {
-        setData(json[tab] || []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    if (tab === 'analytics') {
+      fetch('/api/admin/analytics')
+        .then((r) => r.json())
+        .then((json) => {
+          setAnalytics(json.analytics || null);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    } else {
+      fetch(`/api/admin/${tab}`)
+        .then((r) => r.json())
+        .then((json) => {
+          setData(json[tab] || []);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    }
   }, [tab]);
 
   return (
@@ -53,10 +73,73 @@ export default function AdminPanel({ onBack }) {
           >
             Inquiries
           </button>
+          <button
+            onClick={() => setTab('analytics')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              tab === 'analytics'
+                ? 'bg-indigo-600 text-white'
+                : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+            }`}
+          >
+            Analytics
+          </button>
         </div>
 
         {loading ? (
           <p className="text-gray-500 text-sm">Loading...</p>
+        ) : tab === 'analytics' ? (
+          analytics ? (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <StatCard label="Appointments" value={analytics.total_appointments} />
+                <StatCard label="Inquiries" value={analytics.total_inquiries} />
+                <StatCard label="Messages" value={analytics.total_messages} />
+                <StatCard label="Sessions" value={analytics.unique_sessions} />
+              </div>
+              {analytics.services.length > 0 && (
+                <div className="bg-white rounded-xl border border-gray-200 p-4">
+                  <h3 className="text-sm font-medium text-gray-600 mb-3">Popular Services</h3>
+                  <div className="space-y-2">
+                    {analytics.services.map(([service, count]) => (
+                      <div key={service} className="flex items-center gap-3">
+                        <span className="text-sm text-gray-800 flex-1 capitalize">{service}</span>
+                        <div className="w-32 bg-gray-100 rounded-full h-2">
+                          <div
+                            className="bg-indigo-500 h-2 rounded-full"
+                            style={{ width: `${(count / analytics.total_appointments) * 100}%` }}
+                          />
+                        </div>
+                        <span className="text-sm text-gray-500 w-8 text-right">{count}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {analytics.daily_activity.length > 0 && (
+                <div className="bg-white rounded-xl border border-gray-200 p-4">
+                  <h3 className="text-sm font-medium text-gray-600 mb-3">Last 7 Days Activity</h3>
+                  <div className="space-y-2">
+                    {analytics.daily_activity.map(([date, count]) => (
+                      <div key={date} className="flex items-center gap-3">
+                        <span className="text-sm text-gray-800 w-24">{date}</span>
+                        <div className="flex-1 bg-gray-100 rounded-full h-2">
+                          <div
+                            className="bg-emerald-500 h-2 rounded-full"
+                            style={{ width: `${(count / Math.max(...analytics.daily_activity.map(d => d[1]))) * 100}%` }}
+                          />
+                        </div>
+                        <span className="text-sm text-gray-500 w-8 text-right">{count}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-500">
+              No analytics data yet.
+            </div>
+          )
         ) : data.length === 0 ? (
           <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-500">
             No {tab} yet.
