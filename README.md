@@ -4,6 +4,10 @@
 
 **[Live Demo](https://small-business-agent.vercel.app/)** | **[Demo Video](#)** | **[GitHub](https://github.com/rsm-wew068/small_business_agent)**
 
+![QR Code](qr.png)
+
+Scan to try it on your phone.
+
 ---
 
 ## Tech Stack
