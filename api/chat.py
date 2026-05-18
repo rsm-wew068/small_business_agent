@@ -1,7 +1,6 @@
 import sys
 import os
 import json
-import asyncio
 from http.server import BaseHTTPRequestHandler
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
@@ -25,10 +24,7 @@ class handler(BaseHTTPRequestHandler):
         body = json.loads(self.rfile.read(content_length)) if content_length else {}
         messages = body.get("messages", [])
 
-        try:
-            response = asyncio.get_event_loop().run_until_complete(chat(messages))
-        except RuntimeError:
-            response = asyncio.run(chat(messages))
+        response = chat(messages)
 
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
