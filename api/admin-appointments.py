@@ -1,7 +1,11 @@
+import sys
+import os
 import json
 from http.server import BaseHTTPRequestHandler
-from dotenv import load_dotenv
 
+sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
+
+from dotenv import load_dotenv
 load_dotenv()
 
 from lib.database import get_appointments

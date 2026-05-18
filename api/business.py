@@ -1,5 +1,10 @@
+import sys
+import os
 import json
 from http.server import BaseHTTPRequestHandler
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
+
 from lib.data import BUSINESS, SERVICES, FAQ
 
 
