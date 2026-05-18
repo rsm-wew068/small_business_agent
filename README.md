@@ -2,11 +2,7 @@
 
 > A smart, conversational AI assistant for a local auto repair shop. Answers service questions, books appointments, and handles customer inquiries.
 
-**[Live Demo](#)** | **[Demo Video](#)** | **[GitHub](https://github.com/rsm-wew068/small_business_agent)**
-
-![QR Code](qr.png)
-
-Scan the QR code to try it on your phone.
+**[Live Demo](https://small-business-agent.vercel.app/)** | **[Demo Video](#)** | **[GitHub](https://github.com/rsm-wew068/small_business_agent)**
 
 ---
 
@@ -130,7 +126,7 @@ pytest tests/
 ## What I'd Improve With More Time
 
 - **Streaming responses** for snappier UX (Groq is fast, but streaming feels better)
-- **Admin dashboard** to view and manage appointments/inquiries
+- **Admin authentication** to protect the dashboard and customer data
 - **SMS/email confirmations** for booked appointments
 - **Analytics tracking** to see what customers ask most
 - **Multi-language support** (Spanish is common in auto shops)
