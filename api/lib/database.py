@@ -31,3 +31,15 @@ def insert_inquiry(customer_name, message, contact):
         "contact": contact,
     }).execute()
     return result.data[0] if result.data else None
+
+
+def get_appointments():
+    client = _get_client()
+    result = client.table("appointments").select("*").order("created_at", desc=True).execute()
+    return result.data
+
+
+def get_inquiries():
+    client = _get_client()
+    result = client.table("inquiries").select("*").order("created_at", desc=True).execute()
+    return result.data

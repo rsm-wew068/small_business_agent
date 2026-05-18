@@ -7,6 +7,7 @@ load_dotenv()
 
 from api.lib.agent import chat
 from api.lib.data import BUSINESS, SERVICES, FAQ
+from api.lib.database import get_appointments, get_inquiries
 
 app = FastAPI()
 
@@ -33,6 +34,16 @@ async def business_endpoint():
 @app.get("/api/health")
 async def health():
     return {"status": "ok"}
+
+
+@app.get("/api/admin/appointments")
+async def admin_appointments():
+    return {"appointments": get_appointments()}
+
+
+@app.get("/api/admin/inquiries")
+async def admin_inquiries():
+    return {"inquiries": get_inquiries()}
 
 
 if __name__ == "__main__":
