@@ -126,9 +126,11 @@ pytest tests/
 ## What I'd Improve With More Time
 
 - **Streaming responses** for snappier UX (Groq is fast, but streaming feels better)
+- **Server-side input validation** for dates, phone numbers, and field lengths before database writes
+- **Persistent conversation history** in Supabase for returning customers
 - **Admin authentication** to protect the dashboard and customer data
 - **SMS/email confirmations** for booked appointments
 - **Analytics tracking** to see what customers ask most
+- **More comprehensive tests** covering the agent loop, database operations, and chat handler
 - **Multi-language support** (Spanish is common in auto shops)
-- **Persistent conversation history** in Supabase for returning customers
 - **Voice support** via Web Speech API or Twilio
