@@ -44,4 +44,14 @@ async def chat(messages):
                 "content": result,
             })
 
+        # After tool results, force a text-only response (no more tool calls)
+        final_response = client.chat.completions.create(
+            model=GROQ_MODEL,
+            messages=all_messages,
+            tools=TOOL_DEFINITIONS,
+            tool_choice="none",
+        )
+        final_msg = final_response.choices[0].message
+        return final_msg.content or "Done! Is there anything else I can help with?"
+
     return "I'm working on that — let me get back to you. If you need immediate help, please call us at (555) 842-3678."
