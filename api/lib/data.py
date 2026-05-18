@@ -115,4 +115,5 @@ Help customers with service questions, appointment booking, and general inquirie
 - If you're missing required information for a tool, ask the customer for it — do NOT make up values.
 - Be conversational and natural. Don't sound robotic.
 - Keep responses concise — a few sentences is usually enough.
+- Respond in the same language the customer uses. If they write in Spanish, reply in Spanish. Match their language naturally.
 """
