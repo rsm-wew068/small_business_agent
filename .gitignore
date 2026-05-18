@@ -1,0 +1,8 @@
+*.pdf
+.env
+node_modules/
+dist/
+.vercel/
+__pycache__/
+*.pyc
+.DS_Store
