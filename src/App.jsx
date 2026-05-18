@@ -4,16 +4,29 @@ import ChatInput from './components/ChatInput'
 import QuickActions from './components/QuickActions'
 import AdminPanel from './components/AdminPanel'
 
+const STORAGE_KEY = 'erics-auto-care-messages'
 const WELCOME_MESSAGE = {
   role: 'assistant',
   content: "Welcome to Eric's Auto Care! 🔧 I'm your virtual assistant. I can help you with our services, book an appointment, or answer any questions. How can I help you today?"
 }
 
+function loadMessages() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved) return JSON.parse(saved)
+  } catch {}
+  return [WELCOME_MESSAGE]
+}
+
 export default function App() {
-  const [messages, setMessages] = useState([WELCOME_MESSAGE])
+  const [messages, setMessages] = useState(loadMessages)
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState('chat')
   const bottomRef = useRef(null)
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
+  }, [messages])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
