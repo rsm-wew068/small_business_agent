@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import ChatWindow from './components/ChatWindow'
 import ChatInput from './components/ChatInput'
 import QuickActions from './components/QuickActions'
+import AdminPanel from './components/AdminPanel'
 
 const WELCOME_MESSAGE = {
   role: 'assistant',
@@ -11,6 +12,7 @@ const WELCOME_MESSAGE = {
 export default function App() {
   const [messages, setMessages] = useState([WELCOME_MESSAGE])
   const [loading, setLoading] = useState(false)
+  const [page, setPage] = useState('chat')
   const bottomRef = useRef(null)
 
   useEffect(() => {
@@ -51,6 +53,10 @@ export default function App() {
     setMessages([WELCOME_MESSAGE])
   }
 
+  if (page === 'admin') {
+    return <AdminPanel onBack={() => setPage('chat')} />
+  }
+
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
@@ -61,12 +67,20 @@ export default function App() {
             <p className="text-xs text-gray-500 hidden sm:block">Your Trusted Neighborhood Auto Shop</p>
           </div>
         </div>
-        <button
-          onClick={handleNewChat}
-          className="text-sm text-gray-500 hover:text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
-        >
-          + New Chat
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setPage('admin')}
+            className="text-sm text-gray-500 hover:text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+          >
+            Admin
+          </button>
+          <button
+            onClick={handleNewChat}
+            className="text-sm text-gray-500 hover:text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+          >
+            + New Chat
+          </button>
+        </div>
       </header>
 
       <ChatWindow messages={messages} loading={loading} bottomRef={bottomRef} />
